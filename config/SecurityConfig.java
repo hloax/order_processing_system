@@ -1,6 +1,7 @@
 package com.orderprocessing.config;
 
 import org.springframework.context.annotation.*;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -32,9 +33,24 @@ public class SecurityConfig {
 			.sessionManagement(session ->
 					session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.authorizeHttpRequests(auth -> auth
+					
 					.requestMatchers("/api/auth/**")
 					.permitAll()
-					.anyRequest().authenticated()
+					
+					.requestMatchers(HttpMethod.GET, "/api/products/**")
+					.authenticated()
+					
+					.requestMatchers(HttpMethod.POST, "/api/products/**")
+					.hasAuthority("ADMIN")
+					
+					.requestMatchers(HttpMethod.PUT, "/api/products/**")
+					.hasAuthority("ADMIN")
+					
+					.requestMatchers(HttpMethod.DELETE, "/api/products/**")
+					.hasAuthority("ADMIN")
+					
+					.anyRequest()
+					.authenticated()
 			)
 			.addFilterBefore(jwtFilter,
 					UsernamePasswordAuthenticationFilter.class

@@ -1,11 +1,17 @@
 package com.orderprocessing.dto.auth;
 
+import jakarta.validation.constraints.*;
+
 public class RegisterRequest {
 
+	@NotBlank
 	private String name;
 	
+	@Email
 	private String email;
 	
+	@NotBlank
+	@Size(min = 8)
 	private String password;
 
 	public RegisterRequest() {}

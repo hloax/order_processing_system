@@ -34,7 +34,7 @@ public class AuthService {
 	}
 
 	public AuthResponse register(RegisterRequest request) {
-		
+				
 		UserEntity user = UserEntity.builder()
 				.name(request.getName())
 				.email(request.getEmail())
@@ -42,6 +42,10 @@ public class AuthService {
 						request.getPassword()))
 				.role(Role.CUSTOMER)
 				.build();
+		
+		if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+			throw new RuntimeException("Email already registered");
+		}
 		
 		userRepository.save(user);
 		
