@@ -5,18 +5,15 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.orderprocessing.dto.auth.AuthResponse;
-import com.orderprocessing.dto.auth.LoginRequest;
-import com.orderprocessing.dto.auth.RegisterRequest;
+import com.orderprocessing.dto.auth.*;
 import com.orderprocessing.entity.Role;
 import com.orderprocessing.entity.UserEntity;
+import com.orderprocessing.exception.EmailAlreadyExistsException;
 import com.orderprocessing.repository.UserRepository;
 import com.orderprocessing.security.JwtService;
 
-//import lombok.RequiredArgsConstructor;
 
 @Service
-//@RequiredArgsConstructor
 public class AuthService {
 
 	private final UserRepository userRepository;
@@ -44,7 +41,7 @@ public class AuthService {
 				.build();
 		
 		if (userRepository.findByEmail(request.getEmail()).isPresent()) {
-			throw new RuntimeException("Email already registered");
+			throw new EmailAlreadyExistsException(request.getEmail());
 		}
 		
 		userRepository.save(user);

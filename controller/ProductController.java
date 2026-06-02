@@ -9,6 +9,8 @@ import com.orderprocessing.dto.product.ProductRequest;
 import com.orderprocessing.dto.product.ProductResponse;
 import com.orderprocessing.service.ProductService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
@@ -21,7 +23,8 @@ public class ProductController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<ProductResponse> createProduct(@RequestBody ProductRequest request) {
+	public ResponseEntity<ProductResponse> createProduct(
+			@Valid @RequestBody ProductRequest request) {
 		return ResponseEntity.ok(productService.createProduct(request));
 	}
 	
@@ -37,7 +40,7 @@ public class ProductController {
 	
 	@PutMapping("{id}")
 	public ResponseEntity<ProductResponse> updateProduct(
-				@PathVariable Long id, @RequestBody ProductRequest request) {
+				@PathVariable Long id, @Valid @RequestBody ProductRequest request) {
 		
 		return ResponseEntity.ok(productService.updateProduct(id, request));
 	}

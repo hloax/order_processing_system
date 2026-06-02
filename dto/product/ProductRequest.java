@@ -2,16 +2,24 @@ package com.orderprocessing.dto.product;
 
 import java.math.BigDecimal;
 
+import jakarta.validation.constraints.*;
+
 public class ProductRequest {
 
+	@NotBlank
 	private String name;
 	
 	private String description;
 	
+	@NotNull
+	@Positive
 	private BigDecimal price;
 	
+	@NotNull
+	@PositiveOrZero
 	private Integer stockQuantity;
 	
+	@NotBlank
 	private String category;
 	
 	public ProductRequest() {}

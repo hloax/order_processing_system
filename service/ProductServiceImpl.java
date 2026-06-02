@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.orderprocessing.dto.product.ProductRequest;
 import com.orderprocessing.dto.product.ProductResponse;
 import com.orderprocessing.entity.Product;
+import com.orderprocessing.exception.ProductNotFoundException;
 import com.orderprocessing.repository.ProductRepository;
 
 @Service
@@ -51,8 +52,7 @@ public class ProductServiceImpl implements ProductService {
 		Product product = 
 				productRepository.findById(id)
 				.orElseThrow(() ->
-						new RuntimeException(
-								"Product not found"));
+						new ProductNotFoundException(id));
 		
 		return mapToResponse(product);
 	}
@@ -63,8 +63,7 @@ public class ProductServiceImpl implements ProductService {
 		Product product =
 				productRepository.findById(id)
 				.orElseThrow(() ->
-						new RuntimeException(
-								"Product not found"));
+					new ProductNotFoundException(id));
 		
 		product.setName(request.getName());
 		product.setDescription(request.getDescription());
@@ -84,8 +83,7 @@ public class ProductServiceImpl implements ProductService {
 		Product product =
 				productRepository.findById(id)
 				.orElseThrow(() ->
-						new RuntimeException(
-								"Product not found"));
+					new ProductNotFoundException(id));
 		
 		productRepository.delete(product);
 	}
