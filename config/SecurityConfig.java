@@ -49,6 +49,12 @@ public class SecurityConfig {
 					.requestMatchers(HttpMethod.DELETE, "/api/products/**")
 					.hasAuthority("ADMIN")
 					
+					.requestMatchers("/api/orders/**")
+					.authenticated()
+					
+					.requestMatchers(HttpMethod.PATCH, "/api/orders/*/status")
+					.hasAuthority("ADMIN")
+					
 					.anyRequest()
 					.authenticated()
 			)

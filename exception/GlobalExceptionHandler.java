@@ -56,13 +56,56 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ErrorResponse>
 			handleValidation(MethodArgumentNotValidException ex) {
 		
+		String field = ex.getBindingResult()
+				.getFieldError()
+				.getField();
+		
 		String message = ex.getBindingResult()
 				.getFieldError()
 				.getDefaultMessage();
 		
 		ErrorResponse response =
 				new ErrorResponse(
-						message,
+						field + ": " + message,
+						HttpStatus.BAD_REQUEST.value(),
+						LocalDateTime.now());
+		
+		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(InsufficientStockException.class)
+	public ResponseEntity<ErrorResponse>
+			handleStockException(InsufficientStockException ex) {
+		
+		ErrorResponse response =
+				new ErrorResponse(
+						ex.getMessage(),
+						HttpStatus.BAD_REQUEST.value(),
+						LocalDateTime.now());
+		
+		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(OrderNotFoundException.class)
+	public ResponseEntity<ErrorResponse>
+			handleOrderNotFound(OrderNotFoundException ex) {
+		
+		ErrorResponse response =
+				new ErrorResponse(
+						ex.getMessage(),
+						HttpStatus.NOT_FOUND.value(),
+						LocalDateTime.now());
+		
+		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler(InvalidOrderStatusException.class)
+	public ResponseEntity<ErrorResponse>
+			handleInvalidStatus(InvalidOrderStatusException ex) {
+		
+		ErrorResponse response =
+				new ErrorResponse(
+						ex.getMessage(),
 						HttpStatus.BAD_REQUEST.value(),
 						LocalDateTime.now());
 		
