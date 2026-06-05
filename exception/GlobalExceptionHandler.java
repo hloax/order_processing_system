@@ -111,4 +111,17 @@ public class GlobalExceptionHandler {
 		
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
+	
+	@ExceptionHandler(UnauthorizedOrderAccessException.class)
+	public ResponseEntity<ErrorResponse>
+			handleUnauthorizedOrderAccess(UnauthorizedOrderAccessException ex) {
+		
+		ErrorResponse response =
+				new ErrorResponse(
+						ex.getMessage(),
+						HttpStatus.FORBIDDEN.value(),
+						LocalDateTime.now());
+		
+		return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+	}
 }

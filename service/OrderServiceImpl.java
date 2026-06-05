@@ -118,10 +118,27 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public OrderResponse getOrderById(Long id) {
 		
+		String email = SecurityUtils.getCurrentUserEmail();
+		
+		UserEntity currentUser =
+				userRepository.findByEmail(email)
+				.orElseThrow(() ->
+						new RuntimeException(
+								"User not found"));
+		
 		Order order =
 				orderRepository.findById(id)
 				.orElseThrow(() ->
 						new OrderNotFoundException(id));
+		
+		boolean owner =
+				order.getUser()
+					.getId()
+					.equals(currentUser.getId());
+		
+		if (!owner && !isAdmin(currentUser)) {
+			throw new UnauthorizedOrderAccessException();
+		}
 		
 		return mapToResponse(order);
 	}
@@ -188,5 +205,9 @@ public class OrderServiceImpl implements OrderService {
 			case COMPLETED,
 					CANCELLED -> false;
 		};
+	}
+	
+	private boolean isAdmin(UserEntity user) {
+		return user.getRole() == Role.ADMIN;
 	}
 }
