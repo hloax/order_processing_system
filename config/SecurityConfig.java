@@ -55,6 +55,12 @@ public class SecurityConfig {
 					.requestMatchers(HttpMethod.PATCH, "/api/orders/*/status")
 					.hasAuthority("ADMIN")
 					
+					.requestMatchers(HttpMethod.PATCH, "/api/products/*/restock")
+					.hasAuthority("ADMIN")
+					
+					.requestMatchers(HttpMethod.GET, "/api/products/low-stock")
+					.hasAuthority("ADMIN")
+					
 					.anyRequest()
 					.authenticated()
 			)

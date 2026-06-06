@@ -2,11 +2,11 @@ package com.orderprocessing.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.orderprocessing.dto.product.ProductRequest;
-import com.orderprocessing.dto.product.ProductResponse;
+import com.orderprocessing.dto.product.*;
 import com.orderprocessing.service.ProductService;
 
 import jakarta.validation.Valid;
@@ -53,4 +53,26 @@ public class ProductController {
 		return ResponseEntity.ok("Product deleted successfully");
 	}
 	
+	@GetMapping("/paged")
+	public ResponseEntity<Page<ProductResponse>> getProducts(
+				@RequestParam(defaultValue= "0") int page,
+				@RequestParam(defaultValue = "10") int size,
+				@RequestParam(defaultValue = "id") String sortBy) {
+		
+		return ResponseEntity.ok(productService.getProducts(page, size, sortBy));
+	}
+	
+	@PatchMapping("/{id}/restock")
+	public ResponseEntity<ProductResponse> restockProduct(
+				@PathVariable Long id, @Valid @RequestBody RestockRequest request) {
+		
+		return ResponseEntity.ok(productService.restockProduct(id, request.getQuantity()));
+	}
+	
+	@GetMapping("/low-stock")
+	public ResponseEntity<List<ProductResponse>> getLowStockProducts(
+				@RequestParam(defaultValue = "10") Integer threshold) {
+		
+		return ResponseEntity.ok(productService.getLowStockProducts(threshold));
+	}
 }

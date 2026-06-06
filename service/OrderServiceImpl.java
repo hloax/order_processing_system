@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import com.orderprocessing.dto.order.*;
@@ -167,6 +168,34 @@ public class OrderServiceImpl implements OrderService {
 		return mapToResponse(updated);
 	}
 	
+	@Override
+	public Page<OrderResponse> getOrders(int page, int size, OrderStatus status) {
+		
+		String email = SecurityUtils.getCurrentUserEmail();
+		
+		UserEntity user =
+				userRepository.findByEmail(email)
+				.orElseThrow(() ->
+						new RuntimeException(
+								"User not found"));
+		
+		Pageable pageable = PageRequest.of(page, size);
+		
+		Page<Order> orders;
+		
+		if (status == null) {
+			
+			orders = orderRepository.findByUser(user, pageable);
+			
+		} else {
+			
+			orders = orderRepository.findByUserAndStatus(
+						user, status, pageable);
+		}
+		
+		return orders.map(this::mapToResponse);
+	}
+		
 	private OrderResponse mapToResponse(Order order) {
 		
 		List<OrderItemResponse> items =

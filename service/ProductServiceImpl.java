@@ -3,6 +3,7 @@ package com.orderprocessing.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import com.orderprocessing.dto.product.ProductRequest;
@@ -10,6 +11,8 @@ import com.orderprocessing.dto.product.ProductResponse;
 import com.orderprocessing.entity.Product;
 import com.orderprocessing.exception.ProductNotFoundException;
 import com.orderprocessing.repository.ProductRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -86,6 +89,43 @@ public class ProductServiceImpl implements ProductService {
 					new ProductNotFoundException(id));
 		
 		productRepository.delete(product);
+	}
+	
+	@Override
+	public Page<ProductResponse> getProducts(int page, int size, String sortBy) {
+		
+		Pageable pageable =
+				PageRequest.of(page, size, Sort.by(sortBy));
+		
+		return productRepository
+				.findAll(pageable)
+				.map(this::mapToResponse);
+	}
+
+	@Override
+	@Transactional
+	public ProductResponse restockProduct(Long productId, Integer quantity) {
+		
+		Product product =
+				productRepository.findById(productId)
+				.orElseThrow(() ->
+						new ProductNotFoundException(productId));
+		
+		product.setStockQuantity(product.getStockQuantity() + quantity);
+		
+		Product updated = productRepository.save(product);
+		
+		return mapToResponse(updated);
+	}
+	
+	@Override
+	public List<ProductResponse> getLowStockProducts(Integer threshold) {
+		
+		return productRepository
+				.findByStockQuantityLessThanEqual(threshold)
+				.stream()
+				.map(this::mapToResponse)
+				.toList();
 	}
 	
 	private ProductResponse mapToResponse(Product product) {
