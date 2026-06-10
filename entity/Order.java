@@ -9,10 +9,6 @@ import lombok.*;
 
 @Entity
 @Table(name = "orders")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
 public class Order {
 
@@ -38,4 +34,67 @@ public class Order {
 	public void prePersist() {
 		createdAt = LocalDateTime.now();
 	}
+	
+	public Order() {}
+
+	public Order(Long id, UserEntity user, OrderStatus status, BigDecimal totalAmount, LocalDateTime createdAt,
+			List<OrderItem> orderItems) {
+		super();
+		this.id = id;
+		this.user = user;
+		this.status = status;
+		this.totalAmount = totalAmount;
+		this.createdAt = createdAt;
+		this.orderItems = orderItems;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public UserEntity getUser() {
+		return user;
+	}
+
+	public void setUser(UserEntity user) {
+		this.user = user;
+	}
+
+	public OrderStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(OrderStatus status) {
+		this.status = status;
+	}
+
+	public BigDecimal getTotalAmount() {
+		return totalAmount;
+	}
+
+	public void setTotalAmount(BigDecimal totalAmount) {
+		this.totalAmount = totalAmount;
+	}
+
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public List<OrderItem> getOrderItems() {
+		return orderItems;
+	}
+
+	public void setOrderItems(List<OrderItem> orderItems) {
+		this.orderItems = orderItems;
+	}
+	
+	
 }

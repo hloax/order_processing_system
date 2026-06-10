@@ -1,8 +1,9 @@
 package com.orderprocessing.entity;
 
 public enum OrderStatus {
-	PENDING,
+	CREATED,
 	PROCESSING,
+	SHIPPED,
 	COMPLETED,
 	CANCELLED
 }

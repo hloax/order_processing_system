@@ -1,49 +1,40 @@
-package com.orderprocessing.entity;
+package com.orderprocessing.dto.product;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.validation.constraints.*;
 
-@Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class Product {
+public class ProductRequest {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
+	@NotBlank
 	private String name;
 	
-	@Column(length = 1000)
 	private String description;
 	
+	@NotNull
+	@Positive
 	private BigDecimal price;
 	
+	@NotNull
+	@PositiveOrZero
 	private Integer stockQuantity;
 	
+	@NotBlank
 	private String category;
 	
-	private LocalDateTime createdAt;
+	public ProductRequest() {}
 	
-	@PrePersist
-	public void prePersist() {
-		createdAt = LocalDateTime.now();
+		public ProductRequest(String name, String description, BigDecimal price, Integer stockQuantity, String category) {
+		
+		this.name = name;
+		this.description = description;
+		this.price = price;
+		this.stockQuantity = stockQuantity;
+		this.category = category;
 	}
 
-	public Long getId() {
-		return id;
-	}
-	
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
+
+
 	public String getName() {
 		return name;
 	}
@@ -82,14 +73,6 @@ public class Product {
 
 	public void setCategory(String category) {
 		this.category = category;
-	}
-
-	public LocalDateTime getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(LocalDateTime createdAt) {
-		this.createdAt = createdAt;
 	}
 	
 }
