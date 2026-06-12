@@ -10,6 +10,8 @@ import com.orderprocessing.dto.order.*;
 import com.orderprocessing.entity.OrderStatus;
 import com.orderprocessing.service.OrderService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {
@@ -23,7 +25,7 @@ public class OrderController {
 	
 	@PostMapping
 	public ResponseEntity<OrderResponse> createOrder(
-			@RequestBody OrderRequest request) {
+			@Valid @RequestBody OrderRequest request) {
 		
 		return ResponseEntity.ok(orderService.createOrder(request, null));
 	}

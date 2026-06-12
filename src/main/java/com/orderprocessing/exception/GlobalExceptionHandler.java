@@ -83,7 +83,7 @@ public class GlobalExceptionHandler {
 						HttpStatus.BAD_REQUEST.value(),
 						LocalDateTime.now());
 		
-		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(response, HttpStatus.CONFLICT);
 	}
 	
 	@ExceptionHandler(OrderNotFoundException.class)

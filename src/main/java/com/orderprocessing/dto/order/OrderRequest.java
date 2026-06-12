@@ -2,8 +2,13 @@ package com.orderprocessing.dto.order;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+
 public class OrderRequest {
 
+	@Valid
+	@NotEmpty
 	private List<OrderItemRequest> items;
 	
 	public OrderRequest() {}

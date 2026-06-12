@@ -1,4 +1,4 @@
-package com.service;
+package com.orderprocessing.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -20,7 +20,6 @@ import com.orderprocessing.event.OrderCreatedEvent;
 import com.orderprocessing.exception.*;
 import com.orderprocessing.messaging.OrderEventPublisher;
 import com.orderprocessing.repository.*;
-import com.orderprocessing.service.OrderServiceImpl;
 
 @ExtendWith(MockitoExtension.class)
 public class OrderServiceImplTest {

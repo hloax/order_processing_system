@@ -9,6 +9,8 @@ public class OrderItemResponse {
 	private Integer quantity;
 	private BigDecimal price;
 	
+	public OrderItemResponse() {}
+	
 	public OrderItemResponse(Long productId, String productName, Integer quantity, BigDecimal price) {
 		
 		this.productId = productId;
@@ -31,6 +33,22 @@ public class OrderItemResponse {
 
 	public BigDecimal getPrice() {
 		return price;
+	}
+
+	public void setProductId(Long productId) {
+		this.productId = productId;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
+
+	public void setPrice(BigDecimal price) {
+		this.price = price;
 	}
 	
 }

@@ -13,10 +13,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.orderprocessing.security.JwtFilter;
 
-import lombok.RequiredArgsConstructor;
-
 @Configuration
-@RequiredArgsConstructor
 public class SecurityConfig {
 
 	private final JwtFilter jwtFilter;

@@ -9,7 +9,7 @@ public class OrderResponse {
 	private String status;
 	private BigDecimal totalAmount;
 	private List<OrderItemResponse> items;
-	
+		
 	public OrderResponse(Long orderId, String status, BigDecimal totalAmount, List<OrderItemResponse> items) {
 		
 		this.orderId = orderId;
@@ -28,6 +28,22 @@ public class OrderResponse {
 
 	public BigDecimal getTotalAmount() {
 		return totalAmount;
+	}
+
+	public void setOrderId(Long orderId) {
+		this.orderId = orderId;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public void setTotalAmount(BigDecimal totalAmount) {
+		this.totalAmount = totalAmount;
+	}
+
+	public void setItems(List<OrderItemResponse> items) {
+		this.items = items;
 	}
 
 	public List<OrderItemResponse> getItems() {
