@@ -56,7 +56,7 @@ public class OrderControllerTest {
 				);
 		response.setTotalAmount(BigDecimal.valueOf(20000));
 		
-		when(orderService.createOrder(any(), anyString()))
+		when(orderService.createOrder(any()))
 				.thenReturn(response);
 		
 		String requestJson = """
@@ -121,7 +121,7 @@ public class OrderControllerTest {
 	@WithMockUser(username= "test@test.com", authorities= {"USER"})
 	void shouldReturnNotFoundWhenProductDoesNotExist() throws Exception {
 		
-		when(orderService.createOrder(any(), any()))
+		when(orderService.createOrder(any()))
 				.thenThrow(new ProductNotFoundException(999L));
 		
 		String requestJson = """
@@ -146,7 +146,7 @@ public class OrderControllerTest {
 	@WithMockUser(username= "test@test.com", authorities= {"USER"})
 	void shouldReturnConflictWhenStockIsInsufficient() throws Exception {
 		
-		when(orderService.createOrder(any(), any()))
+		when(orderService.createOrder(any()))
 				.thenThrow(new InsufficientStockException("Laptop"));
 		
 		String requestJson = """

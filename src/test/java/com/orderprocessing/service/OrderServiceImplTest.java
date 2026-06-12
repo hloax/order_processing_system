@@ -12,7 +12,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import com.orderprocessing.dto.order.*;
 import com.orderprocessing.entity.*;
@@ -20,6 +23,7 @@ import com.orderprocessing.event.OrderCreatedEvent;
 import com.orderprocessing.exception.*;
 import com.orderprocessing.messaging.OrderEventPublisher;
 import com.orderprocessing.repository.*;
+import com.orderprocessing.util.SecurityUtils;
 
 @ExtendWith(MockitoExtension.class)
 public class OrderServiceImplTest {
@@ -43,126 +47,151 @@ public class OrderServiceImplTest {
 	@Test
 	void shouldCreateOrderSuccessfully() {
 		
-		//Arrange
-		UserEntity user = new UserEntity();
-		user.setId(1L);
-		user.setEmail("test@test.com");
-		
-		Product product = new Product();
-		product.setId(1L);
-		product.setName("Laptop");
-		product.setPrice(BigDecimal.valueOf(10000));
-		product.setStockQuantity(10);
-		
-		OrderItemRequest itemRequest = new OrderItemRequest();
-		itemRequest.setProductId(1L);
-		itemRequest.setQuantity(2);
-		
-		OrderRequest orderRequest = new OrderRequest();
-		orderRequest.setItems(List.of(itemRequest));
-		
-		when(userRepository.findByEmail("test@test.com"))
-				.thenReturn(Optional.of(user));
-		
-		when(productRepository.findById(1L))
-				.thenReturn(Optional.of(product));
-		
-		when(productRepository.save(any(Product.class)))
-				.thenAnswer(invocation -> invocation.getArgument(0));
-		
-		when(orderRepository.save(any(Order.class)))
-				.thenAnswer(invocation -> {
-					Order saved = invocation.getArgument(0);
-					saved.setId(1L);
-					return saved;
-				});
-		
-		//Act
-		OrderResponse response =
-				orderService.createOrder(orderRequest, "test@test.com");
-		
-		//Assert
-		assertNotNull(response);
-		
-		assertEquals(
-				BigDecimal.valueOf(20000), response.getTotalAmount());
-		
-		assertEquals(8, product.getStockQuantity());
-		
-		verify(orderRepository, 
-				times(1))
-				.save(any(Order.class));
-		
-		verify(orderEventPublisher,
-				times(1))
-				.publishOrderCreated(any(OrderCreatedEvent.class));
+		try (MockedStatic<SecurityUtils> mocked = Mockito.mockStatic(SecurityUtils.class)) {
+			
+			mocked.when(SecurityUtils::getCurrentUserEmail)
+					.thenReturn("test@test.com");	
+			
+			//Arrange
+			UserEntity user = new UserEntity();
+			user.setId(1L);
+			user.setEmail("test@test.com");
+			
+			Product product = new Product();
+			product.setId(1L);
+			product.setName("Laptop");
+			product.setPrice(BigDecimal.valueOf(10000));
+			product.setStockQuantity(10);
+			
+			OrderItemRequest itemRequest = new OrderItemRequest();
+			itemRequest.setProductId(1L);
+			itemRequest.setQuantity(2);
+			
+			OrderRequest orderRequest = new OrderRequest();
+			orderRequest.setItems(List.of(itemRequest));
+			
+			when(userRepository.findByEmail("test@test.com"))
+					.thenReturn(Optional.of(user));
+			
+			when(productRepository.findById(1L))
+					.thenReturn(Optional.of(product));
+			
+			when(productRepository.save(any(Product.class)))
+					.thenAnswer(invocation -> invocation.getArgument(0));
+			
+			when(orderRepository.save(any(Order.class)))
+					.thenAnswer(invocation -> {
+						Order saved = invocation.getArgument(0);
+						saved.setId(1L);
+						return saved;
+					});
+			
+			//Act
+			OrderResponse response =
+					orderService.createOrder(orderRequest);
+			
+			//Assert
+			assertNotNull(response);
+			
+			assertEquals(
+					BigDecimal.valueOf(20000), response.getTotalAmount());
+			
+			assertEquals(8, product.getStockQuantity());
+			
+			verify(orderRepository, 
+					times(1))
+					.save(any(Order.class));
+			
+			verify(orderEventPublisher,
+					times(1))
+					.publishOrderCreated(any(OrderCreatedEvent.class));
+		}
 	}
 	
 	@Test
 	void shouldThrowExceptionWhenStockIsInsufficient() {
 		
-		Product product = new Product();
-		product.setId(1L);
-		product.setStockQuantity(1);
-		product.setPrice(BigDecimal.valueOf(1000));
-		
-		when(userRepository.findByEmail(anyString()))
-				.thenReturn(Optional.of(new UserEntity()));
-		
-		when(productRepository.findById(1L))
-				.thenReturn(Optional.of(product));
-		
-		OrderItemRequest itemRequest = new OrderItemRequest();
-		itemRequest.setProductId(1L);
-		itemRequest.setQuantity(50);
-		
-		OrderRequest request = new OrderRequest();
-		request.setItems(List.of(itemRequest));
-		
-		assertThrows(InsufficientStockException.class,
-				() -> orderService.createOrder(
-						request, "test@test.com")
-		);
+		try (MockedStatic<SecurityUtils> mocked = Mockito.mockStatic(SecurityUtils.class)) {
+			
+			mocked.when(SecurityUtils::getCurrentUserEmail)
+					.thenReturn("test@test.com");	
+			
+			Product product = new Product();
+			product.setId(1L);
+			product.setStockQuantity(1);
+			product.setPrice(BigDecimal.valueOf(1000));
+			
+			when(userRepository.findByEmail(anyString()))
+					.thenReturn(Optional.of(new UserEntity()));
+			
+			when(productRepository.findById(1L))
+					.thenReturn(Optional.of(product));
+			
+			OrderItemRequest itemRequest = new OrderItemRequest();
+			itemRequest.setProductId(1L);
+			itemRequest.setQuantity(50);
+			
+			OrderRequest request = new OrderRequest();
+			request.setItems(List.of(itemRequest));
+			
+			assertThrows(InsufficientStockException.class,
+					() -> orderService.createOrder(
+							request)
+			);
+		}
 	}
 	
 	@Test
 	void shouldThrowExceptionWhenProductNotFound() {
 		
-		when(userRepository.findByEmail(anyString()))
-				.thenReturn(Optional.of(new UserEntity()));
+		try (MockedStatic<SecurityUtils> mocked = Mockito.mockStatic(SecurityUtils.class)) {
+			
+			mocked.when(SecurityUtils::getCurrentUserEmail)
+					.thenReturn("test@test.com");
+
+			when(userRepository.findByEmail(anyString()))
+					.thenReturn(Optional.of(new UserEntity()));
+			
+			when(productRepository.findById(1L))
+					.thenReturn(Optional.empty());
+			
+			OrderItemRequest item = new OrderItemRequest();
+			item.setProductId(1L);
+			item.setQuantity(2);
+			
+			OrderRequest request = new OrderRequest();
+			request.setItems(List.of(item));
+			
+			assertThrows(ProductNotFoundException.class,
+					() -> orderService.createOrder(
+							request)
+			);
+		}
 		
-		when(productRepository.findById(1L))
-				.thenReturn(Optional.empty());
-		
-		OrderItemRequest item = new OrderItemRequest();
-		item.setProductId(1L);
-		item.setQuantity(2);
-		
-		OrderRequest request = new OrderRequest();
-		request.setItems(List.of(item));
-		
-		assertThrows(ProductNotFoundException.class,
-				() -> orderService.createOrder(
-						request, "test@test.com")
-		);
 	}
 	
 	@Test
 	void shouldThrowExceptionWhenUserNotFound() {
 		
-		when(userRepository.findByEmail(anyString()))
-				.thenReturn(Optional.empty());
+		try (MockedStatic<SecurityUtils> mocked = Mockito.mockStatic(SecurityUtils.class)) {
+			
+			mocked.when(SecurityUtils::getCurrentUserEmail)
+					.thenReturn("test@test.com");
 		
-		OrderItemRequest item = new OrderItemRequest();
-		item.setProductId(1L);
-		item.setQuantity(2);
-		
-		OrderRequest request = new OrderRequest();
-		request.setItems(List.of(item));
-		
-		assertThrows(RuntimeException.class,
-				() -> orderService.createOrder(
-						request, "test@test.com")
-		);
+			when(userRepository.findByEmail(anyString()))
+					.thenReturn(Optional.empty());
+			
+			OrderItemRequest item = new OrderItemRequest();
+			item.setProductId(1L);
+			item.setQuantity(2);
+			
+			OrderRequest request = new OrderRequest();
+			request.setItems(List.of(item));
+			
+			assertThrows(RuntimeException.class,
+					() -> orderService.createOrder(
+							request)
+			);
+		}
 	}
 }

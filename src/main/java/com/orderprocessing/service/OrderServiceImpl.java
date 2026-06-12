@@ -36,9 +36,9 @@ public class OrderServiceImpl implements OrderService {
 	}
 	
 	@Override
-	public OrderResponse createOrder(OrderRequest request, String email) {
+	public OrderResponse createOrder(OrderRequest request) {
 		
-		//String email = SecurityUtils.getCurrentUserEmail();
+		String email = SecurityUtils.getCurrentUserEmail();
 		
 		UserEntity user =
 				userRepository.findByEmail(email)

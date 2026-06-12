@@ -9,7 +9,7 @@ import com.orderprocessing.entity.OrderStatus;
 
 public interface OrderService {
 
-	OrderResponse createOrder(OrderRequest request, String email);
+	OrderResponse createOrder(OrderRequest request);
 	List<OrderResponse> getMyOrders();
 	OrderResponse getOrderById(Long id);
 	OrderResponse updateOrderStatus(Long orderId, OrderStatus status);
