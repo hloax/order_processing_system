@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.orderprocessing.dto.order.*;
 import com.orderprocessing.entity.*;
-import com.orderprocessing.event.OrderCreatedEvent;
+import com.orderprocessing.event.*;
 import com.orderprocessing.exception.*;
 import com.orderprocessing.messaging.OrderEventPublisher;
 import com.orderprocessing.repository.*;
@@ -99,11 +99,20 @@ public class OrderServiceImpl implements OrderService {
 		
 		Order savedOrder = orderRepository.save(order);
 		
+		List<OrderItemEvent> itemEvents =
+				savedOrder.getOrderItems()
+						.stream()
+						.map(item -> new OrderItemEvent(
+								item.getProduct().getId(),
+								item.getQuantity()))
+						.toList();
+		
 		OrderCreatedEvent event =
 				new OrderCreatedEvent(
 						savedOrder.getId(),
 						user.getEmail(),
-						savedOrder.getTotalAmount());
+						savedOrder.getTotalAmount(),
+						itemEvents);
 		
 		orderEventPublisher.publishOrderCreated(event);
 		
