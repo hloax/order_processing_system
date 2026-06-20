@@ -14,9 +14,10 @@ public class InventoryService {
 	private final ProductRepository productRepository;
 	private final InventoryEventPublisher inventoryEventPublisher;
 	
-	public InventoryService(ProductRepository productRepository) {
+	public InventoryService(ProductRepository productRepository,
+			InventoryEventPublisher inventoryEventPublisher) {
 		this.productRepository = productRepository;
-		this.inventoryEventPublisher = null;
+		this.inventoryEventPublisher = inventoryEventPublisher;
 	}
 
 	public void reserveStock(OrderCreatedEvent event) {
