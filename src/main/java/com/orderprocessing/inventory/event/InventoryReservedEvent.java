@@ -3,12 +3,14 @@ package com.orderprocessing.inventory.event;
 public class InventoryReservedEvent {
 
 	private Long orderId;
+	private String status;
 	
 	public InventoryReservedEvent() {}
 
 	
-	public InventoryReservedEvent(Long orderId) {
+	public InventoryReservedEvent(Long orderId, String status) {
 		this.orderId = orderId;
+		this.status = status;
 	}
 
 	public Long getOrderId() {
@@ -17,6 +19,15 @@ public class InventoryReservedEvent {
 
 	public void setOrderId(Long orderId) {
 		this.orderId = orderId;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	
 }

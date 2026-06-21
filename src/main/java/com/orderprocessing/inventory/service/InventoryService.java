@@ -40,7 +40,8 @@ public class InventoryService {
 				"Inventory reserved for order " + event.getOrderId());
 	
 		InventoryReservedEvent reservedEvent =
-				new InventoryReservedEvent(event.getOrderId());
+				new InventoryReservedEvent(
+						event.getOrderId(), "PROCESSING");
 		
 		inventoryEventPublisher
 				.publishInventoryReserved(reservedEvent);

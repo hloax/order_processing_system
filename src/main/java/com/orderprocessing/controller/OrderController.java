@@ -7,7 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.orderprocessing.dto.order.*;
-import com.orderprocessing.entity.OrderStatus;
+import com.orderprocessing.entity.*;
+import com.orderprocessing.repository.OrderAuditRepository;
 import com.orderprocessing.service.OrderService;
 
 import jakarta.validation.Valid;
@@ -17,10 +18,13 @@ import jakarta.validation.Valid;
 public class OrderController {
 
 	private final OrderService orderService;
+	private final OrderAuditRepository auditRepository;
 
-	public OrderController(OrderService orderService) {
+	public OrderController(OrderService orderService,
+			OrderAuditRepository auditRepository) {
 		
 		this.orderService = orderService;
+		this.auditRepository = auditRepository;
 	}
 	
 	@PostMapping
@@ -61,5 +65,14 @@ public class OrderController {
 		
 		return ResponseEntity.ok(
 					orderService.getOrders(page, size, status));
+	}
+	
+	@GetMapping("/{orderId}/history")
+	public ResponseEntity<List<OrderAudit>> getHistory(
+			@PathVariable Long orderId) {
+		
+		return ResponseEntity.ok(
+				auditRepository
+					.findByOrderIdOrderByCreatedAtAsc(orderId));
 	}
 }

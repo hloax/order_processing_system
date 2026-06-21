@@ -16,7 +16,10 @@ public class RabbitMQConfig {
 	public static final String INVENTORY_EXCHANGE = "inventory.exchange";
 	public static final String INVENTORY_RESERVED_QUEUE = "inventory.reserved.queue";
 	public static final String INVENTORY_RESERVED_KEY = "inventory.reserved";
-	
+	public static final String ORDER_STATUS_QUEUE = "order.status.queue";
+	public static final String SHIPPING_EXCHANGE = "shipping.exchange";
+	public static final String SHIPPING_QUEUE = "shipping.queue";
+	public static final String SHIPPING_KEY = "order.shipped";
 	
 	@Bean
 	public TopicExchange exchange() {
@@ -26,6 +29,11 @@ public class RabbitMQConfig {
 	@Bean
 	public TopicExchange inventoryExchange() {
 		return new TopicExchange(INVENTORY_EXCHANGE);
+	}
+	
+	@Bean
+	public TopicExchange shippingExchange() {
+		return new TopicExchange(SHIPPING_EXCHANGE);
 	}
 	
 	@Bean
@@ -51,6 +59,16 @@ public class RabbitMQConfig {
 	@Bean
 	public Queue inventoryReservedQueue() {
 		return new Queue(INVENTORY_RESERVED_QUEUE);
+	}
+	
+	@Bean
+	public Queue orderStatusQueue() {
+		return new Queue(ORDER_STATUS_QUEUE);
+	}
+	
+	@Bean
+	public Queue shippingQueue() {
+		return new Queue(SHIPPING_QUEUE);
 	}
 	
 	@Bean
@@ -108,5 +126,27 @@ public class RabbitMQConfig {
 				.bind(inventoryReservedQueue)
 				.to(inventoryExchange)
 				.with(INVENTORY_RESERVED_KEY);
+	}
+	
+	@Bean
+	public Binding orderStatusBinding(
+			Queue orderStatusQueue,
+			TopicExchange inventoryExchange) {
+		
+		return BindingBuilder
+				.bind(orderStatusQueue)
+				.to(inventoryExchange)
+				.with(INVENTORY_RESERVED_KEY);
+	}
+	
+	@Bean
+	public Binding shippingBinding(
+			Queue shippingQueue,
+			TopicExchange shippingExchange) {
+		
+		return BindingBuilder
+				.bind(shippingQueue)
+				.to(shippingExchange)
+				.with(SHIPPING_KEY);
 	}
 }
