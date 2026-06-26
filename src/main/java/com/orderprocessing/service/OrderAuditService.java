@@ -1,6 +1,7 @@
 package com.orderprocessing.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -25,5 +26,9 @@ public class OrderAuditService {
 		audit.setCreatedAt(LocalDateTime.now());
 		
 		auditRepository.save(audit);
+	}
+	
+	public List<OrderAudit> getHistory(Long orderId) {
+		return auditRepository.findByOrderIdOrderByCreatedAtAsc(orderId);
 	}
 }

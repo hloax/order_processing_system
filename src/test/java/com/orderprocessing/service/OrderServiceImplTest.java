@@ -15,7 +15,6 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.test.context.support.WithMockUser;
 
 import com.orderprocessing.dto.order.*;
 import com.orderprocessing.entity.*;

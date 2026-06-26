@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.orderprocessing.dto.order.*;
 import com.orderprocessing.entity.*;
-import com.orderprocessing.repository.OrderAuditRepository;
-import com.orderprocessing.service.OrderService;
+import com.orderprocessing.service.*;
 
 import jakarta.validation.Valid;
 
@@ -18,13 +17,13 @@ import jakarta.validation.Valid;
 public class OrderController {
 
 	private final OrderService orderService;
-	private final OrderAuditRepository auditRepository;
+	private final OrderAuditService auditService;
 
 	public OrderController(OrderService orderService,
-			OrderAuditRepository auditRepository) {
+			OrderAuditService auditService) {
 		
 		this.orderService = orderService;
-		this.auditRepository = auditRepository;
+		this.auditService = auditService;
 	}
 	
 	@PostMapping
@@ -72,7 +71,6 @@ public class OrderController {
 			@PathVariable Long orderId) {
 		
 		return ResponseEntity.ok(
-				auditRepository
-					.findByOrderIdOrderByCreatedAtAsc(orderId));
+				auditService.getHistory(orderId));
 	}
 }

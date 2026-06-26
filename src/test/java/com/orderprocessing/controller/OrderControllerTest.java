@@ -18,9 +18,9 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.orderprocessing.dto.order.*;
-//import com.orderprocessing.exception.*;
+import com.orderprocessing.exception.*;
 import com.orderprocessing.security.*;
-import com.orderprocessing.service.OrderService;
+import com.orderprocessing.service.*;
 
 @WebMvcTest(controllers = OrderController.class)
 public class OrderControllerTest {
@@ -30,6 +30,9 @@ public class OrderControllerTest {
 	
 	@MockitoBean
 	private OrderService orderService;
+	
+	@MockitoBean
+	private OrderAuditService orderAuditService;
 	
 	@MockitoBean
 	private JwtService jwtService;
@@ -78,7 +81,7 @@ public class OrderControllerTest {
 		
 	}
 	
-	/*@Test
+	@Test
 	@WithMockUser(username= "test@test.com", authorities= {"USER"})
 	void shouldReturnBadRequestWhenQuantityIsInvalid() throws Exception {
 		
@@ -165,5 +168,5 @@ public class OrderControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(requestJson))
 				.andExpect(status().isConflict());
-	}*/
+	}
 }
