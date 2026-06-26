@@ -9,10 +9,7 @@ import org.springframework.stereotype.Service;
 import com.orderprocessing.entity.UserEntity;
 import com.orderprocessing.repository.UserRepository;
 
-import lombok.RequiredArgsConstructor;
-
 @Service
-@RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
 	private final UserRepository userRepository;
@@ -20,7 +17,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	public CustomUserDetailsService(UserRepository userRepository) {
 		this.userRepository = userRepository;
 	}
-	
+
 	@Override
 	public UserDetails loadUserByUsername(String email)
 			throws UsernameNotFoundException {

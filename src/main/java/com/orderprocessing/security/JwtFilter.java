@@ -10,21 +10,18 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
-import lombok.RequiredArgsConstructor;
 
 @Component
-@RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
 
 	private final JwtService jwtService;
 	private final CustomUserDetailsService userDetailsService;
 	
 	public JwtFilter(JwtService jwtService, CustomUserDetailsService userDetailsService) {
-		
 		this.jwtService = jwtService;
 		this.userDetailsService = userDetailsService;
 	}
-	
+
 	@Override
 	protected void doFilterInternal(
 			HttpServletRequest request,
