@@ -1,0 +1,19 @@
+spring.application.name=orderprocessing
+
+spring.rabbitmq.host=localhost
+spring.rabbitmq.port=5672
+spring.rabbitmq.username=guest
+spring.rabbitmq.password=guest
+
+spring.datasource.url=jdbc:postgresql://localhost:5432/order_processing_db
+spring.datasource.username=postgres
+spring.datasource.password=Password
+spring.datasource.driver-class-name=org.postgresql.Driver
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+
+jwt.secret=theVeryLongSecretKeyThatMustBeLong123456
+jwt.expiration=86400000
+server.port =8080

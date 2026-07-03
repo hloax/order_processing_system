@@ -22,7 +22,7 @@ public class InventoryService {
 
 	public void reserveStock(OrderCreatedEvent event) {
 		
-		for (OrderItemEvent item : event.getItems()) {
+		/*for (OrderItemEvent item : event.getItems()) {
 		
 			Product product =
 					productRepository.findById(
@@ -34,7 +34,7 @@ public class InventoryService {
 					- item.getQuantity());
 			
 			productRepository.save(product);
-		}
+		}*/
 		
 		System.out.println(
 				"Inventory reserved for order " + event.getOrderId());

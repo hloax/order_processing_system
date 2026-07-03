@@ -23,5 +23,4 @@ public class InventoryEventListener {
 		inventoryService.reserveStock(event);
 	}
 	
-	
 }
