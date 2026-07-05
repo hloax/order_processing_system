@@ -1,5 +1,7 @@
 package com.orderprocessing.inventory.listener;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
@@ -10,17 +12,14 @@ import com.orderprocessing.inventory.service.InventoryService;
 @Component
 public class InventoryEventListener {
 
-	private final InventoryService inventoryService;
-
-	public InventoryEventListener(InventoryService inventoryService) {
-		this.inventoryService = inventoryService;
-	}
+	private static final Logger log =
+			LoggerFactory.getLogger(InventoryService.class);
 	
 	@RabbitListener(queues = RabbitMQConfig.INVENTORY_QUEUE)
 	public void handleOrderCreated(OrderCreatedEvent event) {
 		
-		System.out.println("📦 Inventory received event: " + event.getOrderId());
-		inventoryService.reserveStock(event);
+		log.info("Received OrderCreatedEvent for order {}", event.getOrderId());
+	
 	}
 	
 }

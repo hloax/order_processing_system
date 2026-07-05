@@ -1,5 +1,7 @@
 package com.orderprocessing.inventory.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.orderprocessing.entity.Product;
@@ -11,6 +13,8 @@ import com.orderprocessing.repository.ProductRepository;
 @Service
 public class InventoryService {
 
+	private static final Logger log =
+			LoggerFactory.getLogger(InventoryService.class);
 	private final ProductRepository productRepository;
 	private final InventoryEventPublisher inventoryEventPublisher;
 	
@@ -21,6 +25,8 @@ public class InventoryService {
 	}
 
 	public void reserveStock(OrderCreatedEvent event) {
+		
+		log.info("Reserving stock for order {}", event.getOrderId());
 		
 		/*for (OrderItemEvent item : event.getItems()) {
 		
@@ -36,8 +42,7 @@ public class InventoryService {
 			productRepository.save(product);
 		}*/
 		
-		System.out.println(
-				"Inventory reserved for order " + event.getOrderId());
+		log.info("Inventory reserved for order {}", event.getOrderId());
 	
 		InventoryReservedEvent reservedEvent =
 				new InventoryReservedEvent(
@@ -46,6 +51,6 @@ public class InventoryService {
 		inventoryEventPublisher
 				.publishInventoryReserved(reservedEvent);
 		
-		System.out.println("Published inventory reserved event");
+		log.info("Published InventoryReservedEvent for order {}", event.getOrderId());
 	}
 }
