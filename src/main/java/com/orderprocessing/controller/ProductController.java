@@ -69,8 +69,8 @@ public class ProductController {
 	}
 	
 	@Operation(
-			summary = "List products",
-			description = "List all products available for sale"
+			summary = "Update product",
+			description = "Edit details of a product available for sale"
 	)
 	@ApiResponses({
 		@ApiResponse(responseCode = "200", description = "Order created successfully"),
