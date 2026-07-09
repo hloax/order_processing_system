@@ -12,7 +12,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 @Testcontainers
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public abstract class BaseIntegrationTest {
-
+	
 	@Container
 	static PostgreSQLContainer<?> postgres =
 			new PostgreSQLContainer<>("postgres:16")
