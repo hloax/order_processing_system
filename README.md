@@ -77,7 +77,7 @@ development practices.
 
 ## System Architecture
 
-![System Architecture](images/System-architecture.jpeg)
+![System Architecture](images/System-architecture.jpg)
 
 ---
 
@@ -89,7 +89,7 @@ The application runs as three coordinated containers:
 - PostgreSQL database
 - RabbitMQ message broker
 
-![Docker Desktop](images/Docker.png)
+![Docker Desktop](images/Docker.PNG)
 
 ---
 
@@ -97,7 +97,7 @@ The application runs as three coordinated containers:
 
 RabbitMQ is responsible for asynchronous communication between modules. Order events are published to a Topic Exchange and consumed by Inventory, Notification, and Audit listeners.
 
-![RabbitMQ](images/Rabbitmq.png)
+![RabbitMQ](images/RabbitMQ.PNG)
 
 ---
 
@@ -105,7 +105,7 @@ RabbitMQ is responsible for asynchronous communication between modules. Order ev
 
 Interactive API documentation generated using OpenApi/Swagger
 
-![Swagger](images/Swagger.png)
+![Swagger](images/Swagger.PNG)
 
 ---
 
@@ -113,4 +113,4 @@ Interactive API documentation generated using OpenApi/Swagger
 
 GitHub Actions automatically builds and tests the application on every push.
 
-![GitHub Actions](images/GithubCI.png)
+![GitHub Actions](images/GithubCI.PNG)
