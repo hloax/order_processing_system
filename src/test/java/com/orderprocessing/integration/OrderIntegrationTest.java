@@ -6,7 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.math.BigDecimal;
 
-import org.junit.jupiter.api.Disabled;
+//import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -17,7 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.orderprocessing.entity.*;
 import com.orderprocessing.repository.*;
 
-@Disabled("Temporarily disabled until Testcontainers are configured")
+//@Disabled("Temporarily disabled until Testcontainers are configured")
 public class OrderIntegrationTest extends BaseIntegrationTest{
 
 	@Autowired

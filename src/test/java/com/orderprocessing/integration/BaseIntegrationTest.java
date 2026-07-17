@@ -10,7 +10,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 @SpringBootTest
 @AutoConfigureMockMvc
 @Testcontainers
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ActiveProfiles("test")
 public abstract class BaseIntegrationTest {
 	
 	@Container
@@ -20,6 +20,9 @@ public abstract class BaseIntegrationTest {
 					.withUsername("test")
 					.withPassword("test");
 	
+	static {
+		postgres.start();
+	}
 	
 	@DynamicPropertySource
 	static void configureProperties(DynamicPropertyRegistry registry) {
