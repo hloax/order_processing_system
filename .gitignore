@@ -22,7 +22,6 @@ src/main/resources/application.properties
 *.iws
 *.iml
 *.ipr
-*.properties
 
 
 ### NetBeans ###
