@@ -72,3 +72,45 @@ About
 
 Built as a portfolio project showcasing enterprise Java backend
 development practices.
+
+# Order Processing System
+
+## System Architecture
+
+![System Architecture](images/System-architecture.jpeg)
+
+---
+
+## Docker Deployment
+
+The application runs as three coordinated containers:
+
+- Spring Boot application
+- PostgreSQL database
+- RabbitMQ message broker
+
+![Docker Desktop](images/Docker.png)
+
+---
+
+## RabbitMQ
+
+RabbitMQ is responsible for asynchronous communication between modules. Order events are published to a Topic Exchange and consumed by Inventory, Notification, and Audit listeners.
+
+![RabbitMQ](images/Rabbitmq.png)
+
+---
+
+## API Documentation
+
+Interactive API documentation generated using OpenApi/Swagger
+
+![Swagger](images/Swagger.png)
+
+---
+
+## Continuous Integration
+
+GitHub Actions automatically builds and tests the application on every push.
+
+![GitHub Actions](images/GithubCI.png)
