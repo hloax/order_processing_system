@@ -6,6 +6,11 @@ A production-style Java backend built with Spring Boot 4 and Java 21
 demonstrating secure authentication, event-driven architecture, Docker
 deployment, automated testing, and CI/CD.
 
+Architecture
+
+Client -> Spring Boot API -> PostgreSQL -> RabbitMQ -> Inventory /
+Notification / Audit Listeners
+
 Features
 
 -   JWT Authentication & Authorization
@@ -27,11 +32,6 @@ Tech Stack
 Java 21, Spring Boot 4, Spring Security, JWT, PostgreSQL, RabbitMQ,
 Docker, Docker Compose, JUnit 5, Mockito, MockMvc, Testcontainers,
 Maven, GitHub Actions, Swagger/OpenAPI.
-
-Architecture
-
-Client -> Spring Boot API -> PostgreSQL -> RabbitMQ -> Inventory /
-Notification / Audit Listeners
 
 Event Flow
 
@@ -59,21 +59,12 @@ Testing
 -   Integration Tests (Testcontainers)
 -   GitHub Actions CI
 
-Future Improvements
-
--   Microservices
--   API Gateway
--   Flyway
--   Redis
--   Kubernetes
--   Prometheus & Grafana
-
 About
 
 Built as a portfolio project showcasing enterprise Java backend
 development practices.
 
-# Order Processing System
+# Order Processing System Screenshots
 
 ## System Architecture
 
@@ -114,3 +105,12 @@ Interactive API documentation generated using OpenApi/Swagger
 GitHub Actions automatically builds and tests the application on every push.
 
 ![GitHub Actions](images/GithubCI.PNG)
+
+Future Improvements
+
+-   Microservices
+-   API Gateway
+-   Flyway
+-   Redis
+-   Kubernetes
+-   Prometheus & Grafana
