@@ -116,7 +116,7 @@ The system uses RabbitMQ to decouple business operations. After an order is succ
 
 The following sequence diagram illustrates the lifecycle of an order request, from the client through the REST API, data persistance, and asynchronous event publication.
 
-![Order Processing Sequence](inages/Order-sequence.png)
+![Order Processing Sequence](inages/order-sequence.png)
 
 Future Improvements
 
