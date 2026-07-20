@@ -110,13 +110,13 @@ GitHub Actions automatically builds and tests the application on every push.
 
 The system uses RabbitMQ to decouple business operations. After an order is successfully created, an `OrderCreatedEvent` is published to a Topic Exchange. Inventory, Notification, and Audit modules consume the event independently, allowing asynchronous processing without blocking the client request.
 
-![RabbitMQ Event Flow](images, Event-flow.PNG)
+![RabbitMQ Event Flow](images/event-flow.png)
 
 ## Order Processing Sequence
 
 The following sequence diagram illustrates the lifecycle of an order request, from the client through the REST API, data persistance, and asynchronous event publication.
 
-![Order Processing Sequence](inages/Order-sequence.PNG)
+![Order Processing Sequence](inages/Order-sequence.png)
 
 Future Improvements
 
